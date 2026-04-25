@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+
+int main() 
+{
+    char ch;
+    char s[100];
+    char sentence[100];
+
+    // Read character
+    scanf("%c", &ch);
+    // Read string
+    scanf("%s", s);
+    // Read sentence (newline handles clearing previous buffer)
+    scanf("\n%[^\n]%*c", sentence);
+
+    // Print outputs
+    printf("%c\n", ch);
+    printf("%s\n", s);
+    printf("%s\n", sentence);
+    
+    return 0;
+}
