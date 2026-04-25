@@ -1,0 +1,65 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Helper to create a word
+char* create_word(const char* str) {
+    char* word = (char*)malloc(strlen(str) + 1);
+    strcpy(word, str);
+    return word;
+}
+
+int main() {
+    // --- Document Setup ---
+    // Paragraph 1: "Learning C is fun."
+    // Paragraph 2: "Learning pointers is more fun.It is good to have pointers."
+
+    // Constructing Paragraph 1
+    char** p1_s1 = (char**)malloc(4 * sizeof(char*));
+    p1_s1[0] = create_word("Learning");
+    p1_s1[1] = create_word("C");
+    p1_s1[2] = create_word("is");
+    p1_s1[3] = create_word("fun");
+    
+    char*** paragraph1 = (char***)malloc(1 * sizeof(char**));
+    paragraph1[0] = p1_s1;
+
+    // Constructing Paragraph 2
+    char** p2_s1 = (char**)malloc(5 * sizeof(char*));
+    p2_s1[0] = create_word("Learning");
+    p2_s1[1] = create_word("pointers");
+    p2_s1[2] = create_word("is");
+    p2_s1[3] = create_word("more");
+    p2_s1[4] = create_word("fun");
+
+    char** p2_s2 = (char**)malloc(6 * sizeof(char*));
+    p2_s2[0] = create_word("It");
+    p2_s2[1] = create_word("is");
+    p2_s2[2] = create_word("good");
+    p2_s2[3] = create_word("to");
+    p2_s2[4] = create_word("have");
+    p2_s2[5] = create_word("pointers");
+
+    char*** paragraph2 = (char***)malloc(2 * sizeof(char**));
+    paragraph2[0] = p2_s1;
+    paragraph2[1] = p2_s2;
+
+    // Constructing Document
+    char**** document = (char****)malloc(2 * sizeof(char***));
+    document[0] = paragraph1;
+    document[1] = paragraph2;
+
+    // --- Verification (Accessing Specific Parts) ---
+
+    // 1. Get the 2nd sentence in the 2nd paragraph
+    printf("Second sentence, second paragraph: ");
+    for(int i=0; i<6; i++) {
+        printf("%s ", document[1][1][i]);
+    }
+    printf("\n");
+
+    // 2. Get the 1st word in the 1st sentence of the 1st paragraph
+    printf("First word, first sentence, first paragraph: %s\n", document[0][0][0]);
+
+    return 0;
+}
