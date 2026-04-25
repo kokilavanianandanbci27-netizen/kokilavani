@@ -1,0 +1,50 @@
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define MIN_ELEMENT 1
+#define MAX_ELEMENT 1000000
+
+// Function to calculate the sum of a variable number of integers
+int sum(int count, ...) {
+    va_list args;
+    int total = 0;
+    va_start(args, count);
+    for (int i = 0; i < count; i++) {
+        total += va_arg(args, int);
+    }
+    va_end(args);
+    return total;
+}
+
+// Function to find the minimum of a variable number of integers
+int min(int count, ...) {
+    va_list args;
+    va_start(args, count);
+    int minimum = va_arg(args, int); // Initialize with first argument
+    for (int i = 1; i < count; i++) {
+        int num = va_arg(args, int);
+        if (num < minimum) {
+            minimum = num;
+        }
+    }
+    va_end(args);
+    return minimum;
+}
+
+// Function to find the maximum of a variable number of integers
+int max(int count, ...) {
+    va_list args;
+    va_start(args, count);
+    int maximum = va_arg(args, int); // Initialize with first argument
+    for (int i = 1; i < count; i++) {
+        int num = va_arg(args, int);
+        if (num > maximum) {
+            maximum = num;
+        }
+    }
+    va_end(args);
+    return maximum;
+}
+
