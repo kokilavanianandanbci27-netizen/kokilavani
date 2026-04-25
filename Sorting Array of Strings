@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// 1. Lexicographical Non-Decreasing
+int lexicographic_sort(const char* a, const char* b) {
+    return strcmp(a, b);
+}
+
+// 2. Lexicographical Non-Increasing
+int lexicographic_sort_reverse(const char* a, const char* b) {
+    return strcmp(b, a);
+}
+
+// Helper: Count distinct characters
+int count_distinct(const char* s) {
+    int distinct = 0;
+    int chars[26] = {0};
+    for(int i = 0; s[i] != '\0'; i++) {
+        if(chars[s[i] - 'a'] == 0) {
+            chars[s[i] - 'a'] = 1;
+            distinct++;
+        }
+    }
+    return distinct;
+}
+
+// 3. Non-decreasing distinct characters, then lexicographical
+int sort_by_number_of_distinct_characters(const char* a, const char* b) {
+    int distinctA = count_distinct(a);
+    int distinctB = count_distinct(b);
+    if(distinctA == distinctB) return strcmp(a, b);
+    return distinctA - distinctB;
+}
+
+// 4. Non-decreasing length, then lexicographical
+int sort_by_length(const char* a, const char* b) {
+    int lenA = strlen(a);
+    int lenB = strlen(b);
+    if(lenA == lenB) return strcmp(a, b);
+    return lenA - lenB;
+}
+
+// Custom Bubble Sort Implementation
+void string_sort(const char **arr, const int cnt, int (*cmp_func)(const char* a, const char* b)) {
+    for (int i = 0; i < cnt - 1; i++) {
+        for (int j = 0; j < cnt - i - 1; j++) {
+            if (cmp_func(arr[j], arr[j+1]) > 0) {
+                // Swap pointers
+                const char *temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = temp;
+            }
+        }
+    }
+}
