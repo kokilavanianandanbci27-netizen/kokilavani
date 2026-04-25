@@ -1,0 +1,17 @@
+#include <stdio.h>
+
+// Macro to find size by finding the address difference between 
+// the current variable and the next block of its type.
+#define MY_SIZEOF(x) ((char *)(&x + 1) - (char *)&x)
+
+int main() {
+    double d;
+    int i;
+    char c;
+
+    printf("Size of double: %ld bytes\n", MY_SIZEOF(d));
+    printf("Size of int: %ld bytes\n", MY_SIZEOF(i));
+    printf("Size of char: %ld bytes\n", MY_SIZEOF(c));
+
+    return 0;
+}
