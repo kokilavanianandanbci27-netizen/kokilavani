@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Structures for word, sentence, paragraph, and document
+struct word { char* data; };
+struct sentence { struct word* data; int word_count; };
+struct paragraph { struct sentence* data; int sentence_count; };
+struct document { struct paragraph* data; int paragraph_count; };
+
+struct document get_document(char* text) {
+    struct document doc = {NULL, 0};
+    struct paragraph *curr_p = NULL;
+    struct sentence *curr_s = NULL;
+    char *word_start = NULL;
+
+    for (char *s = text; ; ++s) {
+        if (*s == ' ' || *s == '.' || *s == '\n' || *s == '\0') {
+            if (word_start) { // End of a word
+                char tmp = *s; *s = '\0';
+                if (!curr_s) { // New sentence/paragraph needed
+                    if (!curr_p) {
+                        doc.paragraph_count++;
+                        doc.data = realloc(doc.data, sizeof(struct paragraph) * doc.paragraph_count);
+                        curr_p = &doc.data[doc.paragraph_count - 1];
+                        curr_p->data = NULL; curr_p->sentence_count = 0;
+                    }
+                    curr_p->sentence_count++;
+                    curr_p->data = realloc(curr_p->data, sizeof(struct sentence) * curr_p->sentence_count);
+                    curr_s = &curr_p->data[curr_p->sentence_count - 1];
+                    curr_s->data = NULL; curr_s->word_count = 0;
+                }
+                curr_s->word_count++;
+                curr_s->data = realloc(curr_s->data, sizeof(struct word) * curr_s->word_count);
+                curr_s->data[curr_s->word_count - 1].data = word_start;
+                word_start = NULL;
+                if (tmp == '\0') break;
+            }
+            if (*s == '.') curr_s = NULL; // New sentence
+            if (*s == '\n') { curr_s = NULL; curr_p = NULL; } // New paragraph
+        } else if (!word_start) {
+            word_start = s; // Start of a word
+        }
+    }
+    return doc;
+}
+
+// Helper functions for accessing components
+struct paragraph kth_paragraph(struct document Doc, int k) { return Doc.data[k - 1]; }
+struct sentence kth_sentence_in_mth_paragraph(struct document Doc, int k, int m) { return Doc.data[m - 1].data[k - 1]; }
+struct word kth_word_in_mth_sentence_of_nth_paragraph(struct document Doc, int k, int m, int n) { return Doc.data[n - 1].data[m - 1].data[k - 1]; }
