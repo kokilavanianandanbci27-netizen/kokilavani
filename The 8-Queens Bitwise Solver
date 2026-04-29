@@ -1,0 +1,24 @@
+#include <stdio.h>
+
+int count = 0, full;
+
+void solve(int row, int left, int right) {
+    if (row == full) {
+        count++;
+        return;
+    }
+    int pos = full & ~(row | left | right);
+    while (pos) {
+        int bit = pos & -pos;
+        pos -= bit;
+        solve(row | bit, (left | bit) << 1, (right | bit) >> 1);
+    }
+}
+
+int main() {
+    int n = 8;
+    full = (1 << n) - 1;
+    solve(0, 0, 0);
+    printf("Solutions for %d queens: %d\n", n, count);
+    return 0;
+}
